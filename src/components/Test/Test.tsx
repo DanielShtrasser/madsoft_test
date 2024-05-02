@@ -20,13 +20,15 @@ export default function Test({ data, timer }: TestProps) {
 
   useEffect(() => {
     const questionsFromLocalS = localStorage.getItem("questions");
+    const minutesFromLS = localStorage.getItem("minutes");
+    const hoursFromLS = localStorage.getItem("hours");
     if (questionsFromLocalS) {
       setQuestions(JSON.parse(questionsFromLocalS));
     } else {
       setQuestions(data);
       localStorage.setItem("questions", JSON.stringify(data));
     }
-    if (timer) {
+    if (timer && !minutesFromLS && !hoursFromLS) {
       localStorage.setItem("hours", String(timer.hours));
       localStorage.setItem("minutes", String(timer.minutes));
     }
@@ -75,7 +77,7 @@ export default function Test({ data, timer }: TestProps) {
   }, [userAnswers, questions]);
 
   useEffect(() => {
-    localStorage.clear();
+    if (timeIsOut || finish) localStorage.clear();
   }, [timeIsOut, finish]);
 
   return (
