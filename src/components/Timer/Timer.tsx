@@ -50,7 +50,7 @@ export default function Timer({
   };
 
   useEffect(() => {
-    if (!timerId) timerId = setTimeout(tick, 1000);
+    if (!timerId) timerId = setTimeout(tick, 60000);
     setTimeout(() => (timerId = 0), 900);
   }, [h, m]);
 

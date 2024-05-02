@@ -56,5 +56,5 @@ const data: Question[] = [
 ];
 
 export default function App() {
-  return <Test data={data} timer={{ hours: 0, minutes: 30 }} />;
+  return <Test data={data} timer={{ hours: 0, minutes: 10 }} />;
 }
