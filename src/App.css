@@ -1,0 +1,13 @@
+#root {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+@media (min-width: 425px) {
+  #root {
+    padding: 2rem;
+  }
+}

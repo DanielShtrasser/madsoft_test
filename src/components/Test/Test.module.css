@@ -1,0 +1,27 @@
+.test {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 768px;
+  border-radius: 8px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (min-width: 425px) {
+  .test {
+    padding: 20px;
+    width: 80%;
+    box-shadow: 0 0.1em 1em gray;
+  }
+}
+
+@media (max-width: 425px) {
+  .header {
+    justify-content: space-between;
+  }
+}
