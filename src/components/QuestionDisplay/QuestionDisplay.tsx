@@ -24,7 +24,7 @@ function RadioBtn({ answersVariants }: RadioBtnProps) {
       {answersVariants &&
         answersVariants.map(({ text, id }) => {
           return (
-            <div key={id} className={styles.radio}>
+            <div key={id + text} className={styles.radio}>
               <input
                 type="radio"
                 name="answer"
@@ -47,7 +47,7 @@ function CheckBoxGroup({ answersVariants }: CheckBoxProps) {
     <div className={styles.radio__buttons}>
       {answersVariants &&
         answersVariants.map(({ text, id }) => (
-          <div key={id} className={styles.checkbox}>
+          <div key={id + text} className={styles.checkbox}>
             <input
               type="checkbox"
               name="answer"
@@ -89,9 +89,6 @@ function QuestionVariantA({ question }: QuestionVariantProps) {
         "currentQuestion",
         JSON.stringify(currentQuestion + 1)
       );
-      const chekedElem: HTMLInputElement | null =
-        form.querySelector(":checked");
-      if (chekedElem) chekedElem.checked = false;
     }
   }
 
@@ -129,11 +126,6 @@ function QuestionVariantB({ question }: QuestionVariantProps) {
         "currentQuestion",
         JSON.stringify(currentQuestion + 1)
       );
-      const chekedInputs: NodeListOf<HTMLInputElement> | null =
-        form.querySelectorAll(":checked");
-      for (let i of chekedInputs) {
-        i.checked = false;
-      }
     }
   }
 
