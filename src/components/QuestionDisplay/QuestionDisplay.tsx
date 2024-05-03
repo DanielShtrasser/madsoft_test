@@ -22,20 +22,22 @@ function RadioBtn({ answersVariants }: RadioBtnProps) {
   return (
     <div className={styles.radio__buttons}>
       {answersVariants &&
-        answersVariants.map(({ text, id }) => (
-          <div key={id} className={styles.radio}>
-            <input
-              type="radio"
-              name="answer"
-              value={id}
-              id={id}
-              className={styles.radio__input}
-            />
-            <label htmlFor={id} className={styles.radio__label}>
-              {text}
-            </label>
-          </div>
-        ))}
+        answersVariants.map(({ text, id }) => {
+          return (
+            <div key={id} className={styles.radio}>
+              <input
+                type="radio"
+                name="answer"
+                value={id}
+                id={text}
+                className={styles.radio__input}
+              />
+              <label htmlFor={text} className={styles.radio__label}>
+                {text}
+              </label>
+            </div>
+          );
+        })}
     </div>
   );
 }
@@ -71,6 +73,7 @@ function QuestionVariantA({ question }: QuestionVariantProps) {
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
+
     const answer = formData.get("answer");
 
     if (answer) {
@@ -80,11 +83,15 @@ function QuestionVariantA({ question }: QuestionVariantProps) {
       ];
       setUserAnswers(newUserAnswers);
       localStorage.setItem("userAnswers", JSON.stringify(newUserAnswers));
+
       setCurrentQuestion(currentQuestion + 1);
       localStorage.setItem(
         "currentQuestion",
         JSON.stringify(currentQuestion + 1)
       );
+      const chekedElem: HTMLInputElement | null =
+        form.querySelector(":checked");
+      if (chekedElem) chekedElem.checked = false;
     }
   }
 
@@ -122,6 +129,11 @@ function QuestionVariantB({ question }: QuestionVariantProps) {
         "currentQuestion",
         JSON.stringify(currentQuestion + 1)
       );
+      const chekedInputs: NodeListOf<HTMLInputElement> | null =
+        form.querySelectorAll(":checked");
+      for (let i of chekedInputs) {
+        i.checked = false;
+      }
     }
   }
 
