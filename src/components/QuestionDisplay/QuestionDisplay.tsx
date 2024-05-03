@@ -29,10 +29,10 @@ function RadioBtn({ answersVariants }: RadioBtnProps) {
                 type="radio"
                 name="answer"
                 value={id}
-                id={text}
+                id={id}
                 className={styles.radio__input}
               />
-              <label htmlFor={text} className={styles.radio__label}>
+              <label htmlFor={id} className={styles.radio__label}>
                 {text}
               </label>
             </div>
