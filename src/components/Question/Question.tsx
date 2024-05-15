@@ -1,70 +1,18 @@
 import { Question } from "../../types";
-import styles from "./QuestionDisplay.module.css";
 import { useTestContext } from "../../contexts/testContext";
+import RadioBtn from "../RadioBtnGroup";
+import CheckBoxGroup from "../CheckBoxGroup";
+import styles from "./Questions.module.css";
 
 interface QuestionDisplayProps {
   question: Question;
 }
 
-interface RadioBtnProps {
-  answersVariants?: { text: string; id: string }[];
-}
-
-interface CheckBoxProps {
-  answersVariants: { text: string; id: string }[];
-}
-
-interface QuestionVariantProps {
+interface QuestionTypeProps {
   question: Question;
 }
 
-function RadioBtn({ answersVariants }: RadioBtnProps) {
-  return (
-    <div className={styles.radio__buttons}>
-      {answersVariants &&
-        answersVariants.map(({ text, id }) => {
-          return (
-            <div key={id + text} className={styles.radio}>
-              <input
-                type="radio"
-                name="answer"
-                value={id}
-                id={id}
-                className={styles.radio__input}
-              />
-              <label htmlFor={id} className={styles.radio__label}>
-                {text}
-              </label>
-            </div>
-          );
-        })}
-    </div>
-  );
-}
-
-function CheckBoxGroup({ answersVariants }: CheckBoxProps) {
-  return (
-    <div className={styles.radio__buttons}>
-      {answersVariants &&
-        answersVariants.map(({ text, id }) => (
-          <div key={id + text} className={styles.checkbox}>
-            <input
-              type="checkbox"
-              name="answer"
-              value={id}
-              id={id}
-              className={styles.checkbox__input}
-            />
-            <label htmlFor={id} className={styles.checkbox__label}>
-              {text}
-            </label>
-          </div>
-        ))}
-    </div>
-  );
-}
-
-function QuestionVariantA({ question }: QuestionVariantProps) {
+function QuestionTypeA({ question }: QuestionTypeProps) {
   const { questionTxt, answersVariants, id } = question;
   const { userAnswers, setUserAnswers, currentQuestion, setCurrentQuestion } =
     useTestContext();
@@ -82,13 +30,7 @@ function QuestionVariantA({ question }: QuestionVariantProps) {
         { questionId: id, userAnswerTxt: answer },
       ];
       setUserAnswers(newUserAnswers);
-      localStorage.setItem("userAnswers", JSON.stringify(newUserAnswers));
-
       setCurrentQuestion(currentQuestion + 1);
-      localStorage.setItem(
-        "currentQuestion",
-        JSON.stringify(currentQuestion + 1)
-      );
     }
   }
 
@@ -103,7 +45,7 @@ function QuestionVariantA({ question }: QuestionVariantProps) {
   );
 }
 
-function QuestionVariantB({ question }: QuestionVariantProps) {
+function QuestionTypeB({ question }: QuestionTypeProps) {
   const { questionTxt, answersVariants, id } = question;
   const { userAnswers, setUserAnswers, currentQuestion, setCurrentQuestion } =
     useTestContext();
@@ -120,12 +62,7 @@ function QuestionVariantB({ question }: QuestionVariantProps) {
         { questionId: id, userAnswerTxt: userAnswerTxt },
       ];
       setUserAnswers(newUserAnswers);
-      localStorage.setItem("userAnswers", JSON.stringify(newUserAnswers));
       setCurrentQuestion(currentQuestion + 1);
-      localStorage.setItem(
-        "currentQuestion",
-        JSON.stringify(currentQuestion + 1)
-      );
     }
   }
 
@@ -140,7 +77,7 @@ function QuestionVariantB({ question }: QuestionVariantProps) {
   );
 }
 
-function QuestionVariantC({ question }: QuestionVariantProps) {
+function QuestionTypeC({ question }: QuestionTypeProps) {
   const { questionTxt, answersVariants, id } = question;
   const { userAnswers, setUserAnswers, currentQuestion, setCurrentQuestion } =
     useTestContext();
@@ -160,12 +97,7 @@ function QuestionVariantC({ question }: QuestionVariantProps) {
       ];
 
       setUserAnswers(newUserAnswers);
-      localStorage.setItem("userAnswers", JSON.stringify(newUserAnswers));
       setCurrentQuestion(currentQuestion + 1);
-      localStorage.setItem(
-        "currentQuestion",
-        JSON.stringify(currentQuestion + 1)
-      );
     }
   }
 
@@ -188,11 +120,17 @@ export default function QuestionDisplay({ question }: QuestionDisplayProps) {
   function getQuestionComponent() {
     switch (question.type) {
       case "A":
-        return <QuestionVariantA question={question} />;
+        return <QuestionTypeA question={question} />;
       case "B":
-        return <QuestionVariantB question={question} />;
+        return <QuestionTypeB question={question} />;
       case "C":
-        return <QuestionVariantC question={question} />;
+        return <QuestionTypeC question={question} />;
+      default:
+        return (
+          <div>
+            Вопрос не может быть отображен. Проверьте корректность данных.
+          </div>
+        );
     }
   }
 

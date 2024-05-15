@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useLocalStorage } from "../../hooks/useLocalStorage.js";
+
 import styles from "./Timer.module.css";
 
 interface TimerProps {
@@ -15,16 +17,8 @@ export default function Timer({
   finish,
 }: TimerProps) {
   const [over, setOver] = useState(false);
-  const [h, setHours] = useState(
-    localStorage.getItem("hours")
-      ? Number(localStorage.getItem("hours"))
-      : hours
-  );
-  const [m, setMinutes] = useState(
-    localStorage.getItem("minutes")
-      ? Number(localStorage.getItem("minutes"))
-      : minutes
-  );
+  const [h, setHours] = useLocalStorage("hours", hours);
+  const [m, setMinutes] = useLocalStorage("minutes", minutes);
 
   let timerId: number;
 

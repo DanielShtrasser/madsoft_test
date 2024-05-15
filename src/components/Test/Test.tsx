@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import Progressbar from "../Progressbar";
 import Timer from "../Timer";
-import Questions from "../Questions";
+import QuestionDisplay from "../Question";
+
 import { UserAnswer, Question } from "../../types";
 import styles from "./Test.module.css";
 import { TestProvider } from "../../contexts/testContext";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 
 interface TestProps {
   data: Question[];
@@ -12,57 +14,26 @@ interface TestProps {
 }
 
 export default function Test({ data, timer }: TestProps) {
-  const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
-  const [currentQuestion, setCurrentQuestion] = useState<number>(0);
+  const [userAnswers, setUserAnswers] = useLocalStorage<UserAnswer[]>(
+    "userAnswers",
+    []
+  );
+  const [questions] = useLocalStorage("questions", data);
+
+  const [currentQuestion, setCurrentQuestion] = useLocalStorage(
+    "currentQuestion",
+    0
+  );
+
   const [timeIsOut, setTimeIsOut] = useState<boolean>(false);
   const [finish, setFinish] = useState(false);
-  const [questions, setQuestions] = useState<Question[]>([]);
 
   useEffect(() => {
-    const questionsFromLocalS = localStorage.getItem("questions");
     const minutesFromLS = localStorage.getItem("minutes");
     const hoursFromLS = localStorage.getItem("hours");
-    if (questionsFromLocalS) {
-      setQuestions(JSON.parse(questionsFromLocalS));
-    } else {
-      setQuestions(data);
-      localStorage.setItem("questions", JSON.stringify(data));
-    }
     if (timer && !minutesFromLS && !hoursFromLS) {
       localStorage.setItem("hours", String(timer.hours));
       localStorage.setItem("minutes", String(timer.minutes));
-    }
-  }, []);
-
-  // async function fetchAnswers() {
-  //   try {
-  //     const res = await fetch("", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(userAnswers),
-  //     });
-  //     if (!res.ok) throw new Error("Ответ сети был не ok.");
-  //   } catch (error: any) {
-  //     console.log("Возникла проблема с вашим fetch запросом: ", error.message);
-  //   }
-  // }
-
-  useEffect(() => {
-    const userAnswersFromLS = localStorage.getItem("userAnswers");
-    const currentQuestionFromLS = localStorage.getItem("currentQuestion");
-
-    if (userAnswersFromLS && userAnswersFromLS !== "[]") {
-      setUserAnswers(JSON.parse(userAnswersFromLS));
-    } else {
-      localStorage.setItem("userAnswers", "[]");
-    }
-
-    if (currentQuestionFromLS && currentQuestionFromLS !== "0") {
-      setCurrentQuestion(JSON.parse(currentQuestionFromLS));
-    } else {
-      localStorage.setItem("currentQuestion", "0");
     }
   }, []);
 
@@ -108,7 +79,11 @@ export default function Test({ data, timer }: TestProps) {
         ) : timeIsOut ? (
           <div style={{ width: "90%" }}>Время вышло!</div>
         ) : questions.length ? (
-          <Questions questions={questions} />
+          questions[currentQuestion] && (
+            <QuestionDisplay
+              question={questions[currentQuestion] as Question}
+            />
+          )
         ) : (
           <div>Вопросы загружаются</div>
         )}
