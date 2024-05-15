@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Progressbar from "../Progressbar";
 import Timer from "../Timer";
 import QuestionDisplay from "../Question";
-
 import { UserAnswer, Question } from "../../types";
 import styles from "./Test.module.css";
 import { TestProvider } from "../../contexts/testContext";
@@ -19,12 +18,10 @@ export default function Test({ data, timer }: TestProps) {
     []
   );
   const [questions] = useLocalStorage("questions", data);
-
   const [currentQuestion, setCurrentQuestion] = useLocalStorage(
     "currentQuestion",
     0
   );
-
   const [timeIsOut, setTimeIsOut] = useState<boolean>(false);
   const [finish, setFinish] = useState(false);
 
@@ -65,12 +62,7 @@ export default function Test({ data, timer }: TestProps) {
         <div className={styles.header}>
           <h3>Тестирование</h3>
           {timer && !timeIsOut && (
-            <Timer
-              hours={timer.hours}
-              minutes={timer.minutes}
-              setTimeIsOut={setTimeIsOut}
-              finish={finish}
-            />
+            <Timer timer={timer} setTimeIsOut={setTimeIsOut} finish={finish} />
           )}
         </div>
         <Progressbar questions={questions} progress={userAnswers.length} />
