@@ -69,7 +69,7 @@ export default function Test({ data, timer }: TestProps) {
         {finish ? (
           <div>Тест окончен</div>
         ) : timeIsOut ? (
-          <div style={{ width: "90%" }}>Время вышло!</div>
+          <div className={styles.timeIsOut}>Время вышло!</div>
         ) : questions.length ? (
           questions[currentQuestion] && (
             <QuestionDisplay

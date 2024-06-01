@@ -12,6 +12,10 @@
   gap: 10px;
 }
 
+.timeIsOut {
+  width: 90%;
+}
+
 @media (min-width: 425px) {
   .test {
     padding: 20px;
